@@ -11,7 +11,6 @@ use App\Http\Controllers\Maintenance\UserController;
 use App\Http\Controllers\Ticket\TicketHdrController;
 use App\Http\Controllers\Ticket\TicketLogController;
 
-
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 });
