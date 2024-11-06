@@ -10,9 +10,10 @@ use App\Http\Controllers\Maintenance\CategoryController;
 use App\Http\Controllers\Maintenance\UserController;
 use App\Http\Controllers\Ticket\TicketHdrController;
 use App\Http\Controllers\Ticket\TicketLogController;
-use App\Http\Controllers\testController;
 
-Route::post('login', [AuthController::class, 'login']);
+Route::prefix('auth')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class);

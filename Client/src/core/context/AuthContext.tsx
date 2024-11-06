@@ -34,15 +34,14 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   useEffect(() => {
     const checkTokenValidity = async () => {
       if (cookies.userToken) {
-        // uncomment if validation token is ready
         // const isValid = await validateToken(cookies.userToken);
         // if (isValid) {
-        setIsAuthenticated(true);
-        const userData =
-          typeof cookies.userData === "string"
-            ? JSON.parse(cookies.userData)
-            : cookies.userData;
-        setUser(userData);
+          setIsAuthenticated(true);
+          const userData =
+            typeof cookies.userData === "string"
+              ? JSON.parse(cookies.userData)
+              : cookies.userData;
+          setUser(userData);
         // } else {
         //   setIsAuthenticated(false);
         //   setUser(null);
