@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { login } from "@/api/auth/login";
-import { validateToken } from "@/api/auth/validateToken";
+// import { validateToken } from "@/api/auth/validateToken"; uncomment if validation token is ready
 import { useCookies } from "react-cookie";
 // import jwt_decode, { JwtPayload } from "jwt-decode";
 
