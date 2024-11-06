@@ -15,7 +15,7 @@
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.1.0",
     "@hookform/resolvers": "^3.9.0",
-    "@mui/material": "^6.1.2",
+    "@mui/material": "^6.1.6",
     "axios": "^1.7.7",
     "jwt-decode": "^4.0.0",
     "next": "14.2.15",

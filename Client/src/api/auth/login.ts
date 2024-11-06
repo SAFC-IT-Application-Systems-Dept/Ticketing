@@ -21,7 +21,7 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
       "api/auth/login",
       data
     );
-
+    console.log(response)
     return response.data;
   } catch (error) {
     // handleErrors(error);
