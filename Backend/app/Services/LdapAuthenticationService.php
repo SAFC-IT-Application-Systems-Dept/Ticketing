@@ -29,32 +29,30 @@ class LdapAuthenticationService
 
         $role = Role::where('name', $user['description'][0])->first();
 
-        if ($role) {
-            $localUser = User::updateOrCreate(
-                ['username' =>  $this->request->username],
-                [
-                    'emp_id' => mt_rand(1000, 9999),
-                    'name' => $user->getName(),
-                    'description' => $user['description'][0] ?? null,
-                    'division' => $user->getDn(),
-                    'password' => Hash::make( $this->request->password)
-                ]
-            );
+        $localUser = User::updateOrCreate(
+            ['username' =>  $this->request->username],
+            [
+                'emp_id' => mt_rand(1000, 9999),
+                'name' => $user->getName(),
+                'description' => $user['description'][0] ?? null,
+                'division' => $user->getDn(),
+                'password' => Hash::make( $this->request->password)
+            ]
+        );
 
+        if(!empty($role)){
             $localUser->assignRole($role->name);
             $localUser->givePermissionTo($role->permissions->pluck('name'));
-
-            $token = $localUser->createToken('SAFC')->plainTextToken;
-
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'message' => 'Login successful.',
-                'user' => $localUser,
-                'permissions' => $localUser->getAllPermissions()->pluck('name'),
-                'access_token' => $token,
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json(['status' => Response::HTTP_NOT_FOUND , 'message' => 'Role not found.'], Response::HTTP_NOT_FOUND);
         }
+
+        $token = $localUser->createToken('SAFC')->plainTextToken;
+
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'message' => 'Login successful.',
+            'user' => $localUser,
+            'permissions' => !empty($role) ? $localUser->getAllPermissions()->pluck('name') : null,
+            'access_token' => $token,
+        ], Response::HTTP_OK);
     }
 }
