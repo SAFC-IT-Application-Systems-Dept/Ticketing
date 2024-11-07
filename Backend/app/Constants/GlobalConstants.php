@@ -6,16 +6,23 @@ class GlobalConstants
 {
     const OPEN = 0;
     const IN_PROGRESS = 1;
-    const IN_REVIEW = 2;
-    const RESOLVED  = 3;
+    const PENDING = 2;
+    const ON_HOLD  = 3;
+    const CANCELLED  = 4;
+    const IN_REVIEW = 5;
+    const COMPLETED  = 6;
+
 
     public static function getStatusesType()
     {
         return [
             self::OPEN => 'Open',
             self::IN_PROGRESS => 'In Progress',
+            self::PENDING => 'Pending',
+            self::ON_HOLD => 'On Hold',
+            self::CANCELLED => 'Cancelled',
             self::IN_REVIEW => 'In Review',
-            self::RESOLVED => 'Resolved',
+            self::COMPLETED => 'Completed',
         ];
     }
 

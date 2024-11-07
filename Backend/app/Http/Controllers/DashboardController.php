@@ -22,20 +22,28 @@ class DashboardController extends Controller
 
     public function __invoke(): JsonResponse
     {
-        if (Auth::user()->can('Can View Dashboard') && Auth::user()->hasRoles('Admin')) {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'total_ticket_count' => $this->getTicketCountsByStatus(),
-                'total_ticket_branch' => $this->getTicketPerBranch(),
-                'total_ticket_category' => $this->getTicketPerCategory(),
-                'total_today_created_ticket' =>  $this->getTicketPerDay(),
-            ], Response::HTTP_OK);
-        } else {
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'data' => $this->ticketHdr->where('emp_id', Auth::user()->id)->latest()->get(),
-            ], Response::HTTP_OK);
-        }
+        return response()->json([
+            'status' => Response::HTTP_OK,
+            'total_ticket' => $this->ticketHdr->count(),
+            'total_ticket_count' => $this->getTicketCountsByStatus($this->ticketHdr->get()),
+            'total_ticket_branch' => $this->getTicketPerBranch(),
+            'total_ticket_category' => $this->getTicketPerCategory(),
+            'total_today_created_ticket' =>  $this->getTicketPerDay(),
+        ], Response::HTTP_OK);
+        // if (Auth::user()->can('Can View Dashboard') && Auth::user()->hasRoles('Admin')) {
+        //     return response()->json([
+        //         'status' => Response::HTTP_OK,
+        //         'total_ticket_count' => $this->getTicketCountsByStatus($this->ticketHdr->get()),
+        //         'total_ticket_branch' => $this->getTicketPerBranch(),
+        //         'total_ticket_category' => $this->getTicketPerCategory(),
+        //         'total_today_created_ticket' =>  $this->getTicketPerDay(),
+        //     ], Response::HTTP_OK);
+        // } else {
+        //     return response()->json([
+        //         'status' => Response::HTTP_OK,
+        //         'data' => $this->ticketHdr->where('emp_id', Auth::user()->id)->latest()->get(),
+        //     ], Response::HTTP_OK);
+        // }
     }
 
     public function getTicketPerDay(): array
@@ -45,17 +53,17 @@ class DashboardController extends Controller
         return [
             'total_created' => $this->ticketHdr->whereDate('created_at', $today)->count(),
             'total_open' => $this->ticketHdr->whereDate('created_at', $today)->where('status', GlobalConstants::OPEN)->count(),
-            'total_resolved' => $this->ticketHdr->whereDate('created_at', $today)->where('status', GlobalConstants::RESOLVED)->count(),
+            'total_resolved' => $this->ticketHdr->whereDate('created_at', $today)->where('status', GlobalConstants::COMPLETED)->count(),
         ];
     }
 
-    public function getTicketCountsByStatus(): array
+    public function getTicketCountsByStatus($data): array
     {
         $statuses = GlobalConstants::getStatusesType();
 
         $ticketCounts = [];
         foreach ($statuses as $status => $label) {
-            $ticketCounts[$label] = $this->ticketHdr->get()->filter(function ($item) use ($status) {
+            $ticketCounts[$label] = $data->filter(function ($item) use ($status) {
                 return $item->status == $status;
             })->count();
         }
@@ -86,11 +94,13 @@ class DashboardController extends Controller
 
     public function getTicketPerBranch(): array
     {
-        $ticketsWithBranch = $this->ticketHdr->get()->filter(function ($item) {
-            return isset($item->user->branch_id);
-        })->groupBy(function ($item) {
-            return $item->user->branch_id;
-        });
+        $ticketsWithBranch = $this->ticketHdr->get()
+            ->filter(function ($item) {
+                return !empty($item->user) && !empty($item->user->branch_id);
+            })
+            ->groupBy(function ($item) {
+                return $item->user->branch_id;
+            });
 
         $totalCountWithBranch = [];
         foreach ($ticketsWithBranch as $branchId => $tickets) {
@@ -98,6 +108,7 @@ class DashboardController extends Controller
             $totalCountWithBranch[] = [
                 'branch_name' => $branch ? $branch->branch_description : 'Branch Does Not Exist',
                 'total_tickets' => $tickets->count(),
+                'status_counts' => $this->getTicketCountsByStatus($tickets)
             ];
         }
 
