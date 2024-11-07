@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\GlobalConstants;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,14 @@ class TicketHdr extends Model
         'body'
     ];
 
-    protected $with = ['user:id,name', 'category:id,category_description'];
+    protected $with = ['user:id,branch_id,name', 'category:id,category_description' , 'user.branch:id,branch_description'];
+
+    protected $appends = ['ticket_status'];
+
+    public function getTicketStatusAttribute()
+    {
+        return GlobalConstants::getStatusType($this->status);
+    }
 
     public function user()
     {
