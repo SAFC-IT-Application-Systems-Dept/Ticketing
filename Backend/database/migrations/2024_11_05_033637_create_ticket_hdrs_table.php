@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('title');
             $table->longText('body');
-            $table->string('status')->default('0');
+            $table->string('status')->default('0')->nullable();
             $table->timestamps();
         });
     }

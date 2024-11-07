@@ -13,14 +13,16 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const cookies = parseCookies();
-    const token = decodeURI(cookies.userToken);
-    console.log(token);
+    const token = cookies.userToken;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    // Log the error if needed or handle it
+    return Promise.reject(error);
+  }
 );
 
 apiClient.interceptors.response.use(
@@ -28,6 +30,9 @@ apiClient.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       router.push("/");
+    } else {
+      // Optional: handle other status codes or errors globally
+      console.error("API error:", error.response?.status, error.response?.data);
     }
     return Promise.reject(error);
   }

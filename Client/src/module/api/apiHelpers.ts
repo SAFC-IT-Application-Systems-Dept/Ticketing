@@ -11,7 +11,7 @@ export const makeAuthenticatedRequest = async <T>(
   body: Record<string, any> = {}
 ): Promise<ApiResponse<T>> => {
   try {
-    const response = await apiClient.create({
+    const response = await apiClient.request({
       url: endpoint,
       method: method,
       data: method === "POST" ? body : undefined,
