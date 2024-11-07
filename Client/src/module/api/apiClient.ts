@@ -13,7 +13,8 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   (config) => {
     const cookies = parseCookies();
-    const token = cookies.userToken;
+    const token = decodeURI(cookies.userToken);
+    console.log(token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

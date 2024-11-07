@@ -16,14 +16,18 @@ interface AttomsTextFieldProps<T extends FieldValues> {
   type?: OutlinedInputProps["type"];
   label?: string | JSX.Element | null;
   defaultValue?: UnpackNestedValue<FieldPathValue<T, FieldPath<T>>>;
+  rows?: number;
+  maxRows?: number;
 }
 
-const AttomsTextField = <T extends FieldValues>({
+const AttomTextField = <T extends FieldValues>({
   name,
   control,
   label,
   defaultValue,
   type,
+  rows,
+  maxRows,
   ...props
 }: AttomsTextFieldProps<T>) => {
   return (
@@ -43,10 +47,13 @@ const AttomsTextField = <T extends FieldValues>({
           type={type}
           variant="outlined"
           sx={{ mt: 2 }}
+          {...(rows ? { rows } : {})}
+          {...(rows ? {} : { maxRows })}
+          multiline={Boolean(rows || maxRows)}
         />
       )}
     />
   );
 };
 
-export default AttomsTextField;
+export default AttomTextField;
