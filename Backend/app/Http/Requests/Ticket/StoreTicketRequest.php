@@ -26,7 +26,6 @@ class StoreTicketRequest extends FormRequest
             'category_id' => 'required',
             'title' => 'required',
             'body' => 'required',
-            'status' => 'required',
         ];
     }
 

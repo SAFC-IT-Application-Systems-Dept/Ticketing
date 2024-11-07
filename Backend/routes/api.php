@@ -19,15 +19,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', DashboardController::class);
     Route::get('get-user', UserController::class);
     Route::post('logout', [AuthController::class, 'logout']);
-});
-
-Route::middleware(['auth'])->group(function () {
     //maintenance routes
     Route::prefix('maintenance')->group(function () {
-        Route::resource('branch', BranchController::class);
-        Route::resource('department', DepartmentController::class);
-        Route::resource('section', SectionController::class);
-        Route::resource('category', CategoryController::class);
+    Route::resource('branch', BranchController::class);
+    Route::resource('department', DepartmentController::class);
+    Route::resource('section', SectionController::class);
+    Route::resource('category', CategoryController::class);
     });
 
     //tickets routes
@@ -36,6 +33,4 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('ticket-hdr', TicketHdrController::class);
     });
 });
-
-
 

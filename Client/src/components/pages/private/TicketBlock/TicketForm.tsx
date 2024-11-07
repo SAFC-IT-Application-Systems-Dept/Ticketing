@@ -36,6 +36,7 @@ export default function TicketForm() {
       toast.executeToast(errorHandler(error), "top-center", true, {
         type: "error",
       });
+      console.log("This",error);
     } finally {
       stopLoading();
       handleCloseModal();
@@ -49,6 +50,10 @@ export default function TicketForm() {
         onClose={handleCloseModal}
         title="Ticket Form"
         fields={[
+          {
+            name: "category_id",
+            label: "Title",
+          },
           {
             name: "title",
             label: "Title",
