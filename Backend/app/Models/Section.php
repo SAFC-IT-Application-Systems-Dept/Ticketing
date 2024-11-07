@@ -13,6 +13,6 @@ class Section extends Model
 
     public function department()
     {
-        return $this->hasMany(Department::class , 'department_id' , 'id');
+        return $this->belongsTo(Department::class , 'department_id' , 'id');
     }
 }
