@@ -3,6 +3,7 @@ import { Modal, Typography, IconButton } from "@mui/material";
 import { Control, FieldValues, SubmitHandler } from "react-hook-form";
 import { AtomButton, AttomTextField } from "@/components/atoms";
 import { FormModalProps } from "@/core/types/Organisms/OrganismsFormModal";
+import MoleculesComboBox from "@/components/molecules/Form/MoleculesComboBox";
 
 export default function OrganismsFormModal<T extends FieldValues>(
   props: FormModalProps<T>
@@ -42,21 +43,40 @@ export default function OrganismsFormModal<T extends FieldValues>(
                 ×
               </IconButton>
             </div>
-            <form onSubmit={props.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={props.handleSubmit(onSubmit)}
+              className={`${
+                props.isGrid && "grid grid-cols-2 items-center gap-2"
+              }`}
+            >
               {props.fields.map((field, index) => {
                 if (field.typeComponent === "select") {
-                  return <h1>This is select</h1>;
+                  return (
+                    <div className="col-span-2">
+                      <MoleculesComboBox
+                        key={index}
+                        name={field.name as any}
+                        control={props.control as Control<T>}
+                        label={field.label || "Select an Option"}
+                        options={field.options || []}
+                      />
+                    </div>
+                  );
                 }
                 return (
-                  <AttomTextField
-                    key={index}
-                    name={field.name as any}
-                    control={props.control as Control<T>}
-                    type={field.type}
-                    label={field.label}
-                    rows={field.rows}
-                    maxRows={field.maxRows}
-                  />
+                  <div
+                    className={`${field.rows && field.maxRows && "col-span-2"}`}
+                  >
+                    <AttomTextField
+                      key={index}
+                      name={field.name as any}
+                      control={props.control as Control<T>}
+                      type={field.type}
+                      label={field.label}
+                      rows={field.rows}
+                      maxRows={field.maxRows}
+                    />
+                  </div>
                 );
               })}
               <AtomButton

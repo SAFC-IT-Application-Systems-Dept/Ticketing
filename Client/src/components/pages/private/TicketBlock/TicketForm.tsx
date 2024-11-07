@@ -36,7 +36,7 @@ export default function TicketForm() {
       toast.executeToast(errorHandler(error), "top-center", true, {
         type: "error",
       });
-      console.log("This",error);
+      console.log("This", error);
     } finally {
       stopLoading();
       handleCloseModal();
@@ -52,7 +52,13 @@ export default function TicketForm() {
         fields={[
           {
             name: "category_id",
-            label: "Title",
+            label: "Category",
+            typeComponent: "select",
+            options: [
+              { label: "Bug", value: "1" },
+              { label: "Feature Request", value: "2" },
+              { label: "Support", value: "3" },
+            ],
           },
           {
             name: "title",
@@ -69,6 +75,7 @@ export default function TicketForm() {
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         isLoading={isLoading}
+        isGrid={false}
       />
     </div>
   );

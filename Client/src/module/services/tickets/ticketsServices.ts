@@ -6,7 +6,7 @@ interface TicketRequest {
 }
 
 interface TicketResponse {
-  message?: string;
+  message: string;
 }
 
 export const createTicketHeader = async (

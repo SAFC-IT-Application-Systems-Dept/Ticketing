@@ -1,8 +1,8 @@
 import { login } from "@/module/auth/login";
+import { logout } from "@/module/auth/logout";
 import React, { createContext, useState, useEffect, useContext } from "react";
 // import { validateToken } from "@/api/auth/validateToken"; uncomment if validation token is ready
 import { useCookies } from "react-cookie";
-// import jwt_decode, { JwtPayload } from "jwt-decode";
 
 interface AuthContextType {
   user: any;
@@ -77,7 +77,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     }
   };
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
+    await logout();
     removeCookie("userToken", { path: "/" });
     removeCookie("userData", { path: "/" });
     setUser(null);
