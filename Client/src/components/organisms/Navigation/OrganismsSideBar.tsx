@@ -20,8 +20,8 @@ const OrganismsSideBar = (props: SidebarProps) => {
       icon: <MdHome />,
     },
     {
-      title: "About",
-      url: "/",
+      title: "Ticket",
+      url: "/ticket",
       icon: <MdPerson />,
     },
   ];

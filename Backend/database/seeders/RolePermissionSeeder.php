@@ -28,7 +28,8 @@ class RolePermissionSeeder extends Seeder
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
         }
-
+        $editorRole = Role::create(['name' => 'IT Application Developer Supervisor']);
+        $editorRole->givePermissionTo(Permission::all());
         $editorRole = Role::create(['name' => 'IT Application Developer']);
         $editorRole->givePermissionTo(Permission::all());
 
