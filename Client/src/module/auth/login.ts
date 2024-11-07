@@ -1,6 +1,4 @@
-// import handleErrors from "@/utils/handleErrors";
-
-import apiClient from "../api/apiClient";
+import { makeAuthenticatedRequest } from "../api/apiHelpers"; // Assuming apiHelpers is the file with the utility
 
 interface LoginRequest {
   username: string;
@@ -17,15 +15,14 @@ interface LoginResponse {
 }
 
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
-  try {
-    const response = await apiClient.post<LoginResponse>(
+  const { data: responseData, error } =
+    await makeAuthenticatedRequest<LoginResponse>(
       "api/auth/login",
+      "POST",
       data
     );
-    console.log(response)
-    return response.data;
-  } catch (error) {
-    // handleErrors(error);
+  if (error) {
     throw error;
   }
+  return responseData;
 };

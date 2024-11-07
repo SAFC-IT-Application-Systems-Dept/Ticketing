@@ -5,9 +5,10 @@ export interface FormModalProps<T> extends FormProps<T> {
   open: boolean;
   onClose: () => void;
   title: string;
+  isGrid: boolean;
   fields: {
     typeComponent?: string;
-    options?: never[];
+    options?: Array<{ label: string; value: string | number }>;
     rows?: number | undefined;
     maxRows?: number | undefined;
     name?: keyof T;
